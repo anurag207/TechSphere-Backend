@@ -4,16 +4,20 @@ const express = require("express");
 const app = express();
 const cors = require("cors");
 const { eventcardRouter } = require("../api/v1/router/eventcardRouter.js");
+const { otpRouter } = require("../api/v1/router/otpRouter.js");
 require("../config/db.js");
-// const {todoRouter}=require('../api/v1/router/todoRouter.js');
-// console.log(Todo);
 
 const PORT = process.env.port || 1900;
 
-app.use(cors({ origin: "http://localhost:5173", credentials: true }));
-app.use(express.json()); // body parser middleware
+app.use(express.json()); //req body parser middleware
 
-// it handles request related to TODOs
+
+
+
+app.use(cors({ origin: process.env.FRONTEND_URL, credentials: true }));
+app.use('/api/v1/otp',otpRouter);
+
+
 app.use("/api/v1/eventcard", eventcardRouter);
 
 app.listen(PORT, () => {
