@@ -15,8 +15,8 @@ app.get("/", (req, res) => {
 
 app.use(express.json()); //req body parser middleware
 
-app.use(cors({ origin: "*", credentials: true }));
-// app.use(cors({ origin: process.env.FRONTEND_URL, credentials: true }));
+// app.use(cors({ origin: "*", credentials: true }));
+app.use(cors({ origin: process.env.FRONTEND_URL, credentials: true }));
 app.use("/api/v1/otp", otpRouter);
 
 app.use("/api/v1/eventcard", eventcardRouter);
