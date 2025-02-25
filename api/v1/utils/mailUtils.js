@@ -19,7 +19,7 @@ const info = await gmailTransporter.sendMail({
     html: html, // html body
   });
 
-  console.log("Message sent: %s", info.messageId);
+//   console.log("Message sent: %s", info.messageId);
   return [true];
 } //IFFI
 catch(err)
