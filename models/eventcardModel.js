@@ -4,7 +4,7 @@ const eventcardSchema=new Schema({
     location:String, 
     name:String,
     description:String,
-    start:String,
+    start: { type: Date }, 
     duration:String,
     prize:String,
     imageBg:String,

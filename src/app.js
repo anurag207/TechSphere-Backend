@@ -29,6 +29,8 @@ app.use("/api/v1/otp", otpRouter);
 
 app.use('/api/v1/auth',authRouter); 
 
+app.use("/api/v1/eventcard", eventcardRouter);
+
 app.use(verifyToken); // user authentication using jwt token
 
 app.get("/api/v1/isAuthenticated", (req,res)=>{
@@ -42,7 +44,6 @@ app.get("/api/v1/isAuthenticated", (req,res)=>{
   })
 })
 
-app.use("/api/v1/eventcard", eventcardRouter);
 
 app.listen(PORT, () => {
   console.log(`Server is running on port ${PORT}---------`);
