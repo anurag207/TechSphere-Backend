@@ -1,6 +1,6 @@
-const {EventCard} =require('../../../models/eventcardModel.js');
+const { EventCard } = require("../../../models/eventcardModel.js");
 
- exports. getEvents = async (req, res) => {
+exports.getEvents = async (req, res) => {
   try {
     const {
       view,
@@ -9,16 +9,13 @@ const {EventCard} =require('../../../models/eventcardModel.js');
       isFree,
       duration,
       page = 1,
-      size = 10,
+      size = 20,
     } = req.query;
 
-    
-
     const filter = {};
-    const today = new Date();
-    today.setUTCHours(0, 0, 0, 0);
+    const today = Date.now();
+    // today.setUTCHours(0, 0, 0, 0);
 
-    
     if (view === "upcoming") {
       filter.start = { $gte: today };
     } else if (view === "past") {
@@ -55,7 +52,7 @@ const {EventCard} =require('../../../models/eventcardModel.js');
     const pageSize = Number(size);
     query = query.skip((pageNumber - 1) * pageSize).limit(pageSize);
 
-    const events = await query.exec();
+    const events = await query;
 
     res.json({
       events,
@@ -72,4 +69,3 @@ const {EventCard} =require('../../../models/eventcardModel.js');
       .json({ error: "Internal Server Error", details: error.message });
   }
 };
-
