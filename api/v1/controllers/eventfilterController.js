@@ -1,4 +1,4 @@
-const { EventCard } = require("../../../models/eventcardModel.js");
+const { Event } = require("../../../models/eventModel.js");
 
 exports.getEvents = async (req, res) => {
   try {
@@ -32,10 +32,10 @@ exports.getEvents = async (req, res) => {
       filter.duration = duration;
     }
 
-    const totalEventsInDatabase = await EventCard.countDocuments({});
-    const totalFilteredEvents = await EventCard.countDocuments(filter);
+    const totalEventsInDatabase = await Event.countDocuments({});
+    const totalFilteredEvents = await Event.countDocuments(filter);
 
-    let query = EventCard.find(filter);
+    let query = Event.find(filter);
 
     const sortFields = {
       date: { start: 1 },

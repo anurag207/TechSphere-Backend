@@ -5,7 +5,7 @@ const cookieParser = require('cookie-parser');
 
 const app = express();
 const cors = require("cors");
-const { eventcardRouter } = require("../api/v1/router/eventcardRouter.js");
+const { eventRouter } = require("../api/v1/router/eventRouter.js");
 const { otpRouter } = require("../api/v1/router/otpRouter.js");
 const { authRouter } = require("../api/v1/router/authRouter.js");
 const { verifyToken } = require("../api/v1/middleware/jwtVerification.js");
@@ -29,7 +29,7 @@ app.use("/api/v1/otp", otpRouter);
 
 app.use('/api/v1/auth',authRouter); 
 
-app.use("/api/v1/eventcard", eventcardRouter);
+app.use("/api/v1/events", eventRouter);
 
 app.use(verifyToken); // user authentication using jwt token
 
