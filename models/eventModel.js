@@ -26,7 +26,7 @@ const eventSchema = new Schema(
         prize: { type: String },
         image_bg: { type: String },
         image_url: { type: String },
-        eventMoreDetails: [eventMoreDetailsSchema], // Embedded schema\
+        eventMoreDetails: eventMoreDetailsSchema, // Embedded schema\
         registration: [registrationSchema],// Embedded schema
         registered: [registeredSchema]// Embedded schema
 
