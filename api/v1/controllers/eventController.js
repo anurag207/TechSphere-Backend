@@ -62,15 +62,15 @@ exports.listEvents = async (req, res) => {
     const { eventId } = req.query; // Check if eventId is provided
 
     if (eventId) {
-      // Fetch only registration details for the specific event
-      const event = await Event.findById(eventId).select("eventMoreDetails");
+      // Fetch both eventMoreDetails and registration details
+      const event = await Event.findById(eventId).select("eventMoreDetails registration");
       if (!event) {
         return res.status(404).json({ status: "fail", message: "Event not found" });
       }
       return res.status(200).json({
         status: "success",
         message: "Event More Details Fetched",
-        data: event.eventMoreDetails,
+        data: event,
       });
     } else {
       // Fetch only basic details for all events
