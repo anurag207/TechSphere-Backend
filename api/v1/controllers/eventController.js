@@ -1,4 +1,7 @@
 const { Event } = require("../../../models/eventModel.js");
+const { User } = require("../../../models/userModel.js");
+
+
 
 exports.createEvents=async (req, res) => {
   try{
@@ -91,7 +94,38 @@ exports.listEvents = async (req, res) => {
 };
 
 
-exports.registerEvent=async (req, res) => {
+// exports.registerEvent=async (req, res) => {
+//   try {
+//     const { eventId } = req.params;
+//     const { registered } = req.body; // Array of registrations
+
+//     // Find the event
+//     const event = await Event.findById(eventId);
+//     if (!event) {
+//         return res.status(404).json({ message: "Event not found" });
+//     }
+
+//     // Register users //for of used instead of for each to handle asynchronous operations properly
+//     for (let reg of registered) {
+//         // const user = await User.findById(reg.userId);
+//         // if (!user) {
+//         //     return res.status(404).json({ message: `User with ID ${reg.userId} not found` });
+//         // }  
+
+//         event.registered.push(reg);
+//         // user.registeredEvents.push(eventId);
+//         // await user.save();
+//     }
+
+//     await event.save();
+//     res.status(200).json({ message: "Users registered successfully", event });
+// } catch (error) {
+//     res.status(500).json({ message: "Error registering users", error: error.message });
+// }
+// }
+
+
+exports.registerEvent = async (req, res) => {
   try {
     const { eventId } = req.params;
     const { registered } = req.body; // Array of registrations
@@ -99,24 +133,21 @@ exports.registerEvent=async (req, res) => {
     // Find the event
     const event = await Event.findById(eventId);
     if (!event) {
-        return res.status(404).json({ message: "Event not found" });
+      return res.status(404).json({ message: "Event not found" });
     }
 
-    // Register users //for of used instead of for each to handle asynchronous operations properly
     for (let reg of registered) {
-        // const user = await User.findById(reg.userId);
-        // if (!user) {
-        //     return res.status(404).json({ message: `User with ID ${reg.userId} not found` });
-        // }  
+      event.registered.push(reg);
 
-        event.registered.push(reg);
-        // user.registeredEvents.push(eventId);
-        // await user.save();
+      // Update the user's registered events
+      await User.findByIdAndUpdate(reg.userId, {
+        $push: { registeredEvents: eventId },
+      });
     }
 
     await event.save();
     res.status(200).json({ message: "Users registered successfully", event });
-} catch (error) {
+  } catch (error) {
     res.status(500).json({ message: "Error registering users", error: error.message });
-}
-}
+  }
+};
