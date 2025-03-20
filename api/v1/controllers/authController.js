@@ -72,7 +72,7 @@ const loginUser= async(req,res)=>{
   // console.log(req.userInfo);
     const {email,password: userPassword}=req.body;
 
-    const user=await User.findOne({email}).select("name email password"); //check email from database after login to get the user document
+    const user=await User.findOne({email}).select("name email password _id"); //check email from database after login to get the user document
     //selct so that only gets name email pass from db not whole object
     if(!user)
     {
@@ -84,7 +84,7 @@ const loginUser= async(req,res)=>{
     }
 
     //password match
-    const {password: hashedPassword, name}=user;
+    const {password: hashedPassword}=user;
     const isPasswordCorrect= await bcrypt.compare(userPassword,hashedPassword);
 
     if(!isPasswordCorrect)
@@ -95,8 +95,11 @@ const loginUser= async(req,res)=>{
         });
         return;
     }
+    const {_id:userId, name}=user;
+    // console.log(id);
 
-    const token= jwt.sign({ email,name }, process.env.JWT_SECRET_KEY, { expiresIn: 10 * 60 }); //10 minutes token expiry
+
+    const token= jwt.sign({ email,name,userId }, process.env.JWT_SECRET_KEY, { expiresIn: 10 * 60 }); //10 minutes token expiry
     
     res.cookie("token",token,{
       maxAge: 900000, //cookie expires in 15 minutes
@@ -107,7 +110,7 @@ const loginUser= async(req,res)=>{
     res.status(200).json({
         status: "login success",
         message: "done",
-        userData: {email,
+        userData: {email,userId
         },
     }); 
 }

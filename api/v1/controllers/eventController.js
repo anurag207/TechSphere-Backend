@@ -1,4 +1,4 @@
-const { Event } = require("../../../models/eventModel.js");
+  const { Event } = require("../../../models/eventModel.js");
 const { User } = require("../../../models/userModel.js");
 
 
