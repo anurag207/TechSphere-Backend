@@ -33,17 +33,17 @@ app.use("/api/v1/events", eventRouter);
 
 app.use(verifyToken); // user authentication using jwt token
 
-app.get("/api/v1/isAuthenticated", (req,res)=>{
+app.get("/api/v1/isAuthenticated", (req, res) => {
+  if (!req.userInfo) {
+    return res.status(401).json({ status: "fail", message: "Not authenticated" });
+  }
   res.json({
-      status: "success",
-      isAuthenticated :true,
-      user: {
-          email: req.userInfo.email,
-          userId:req.userInfo.userId
-          // name: req.userInfo.name
-      }
-  })
-})
+    status: "success",
+    isAuthenticated: true,
+    user: { userId: req.userInfo.userId }, 
+  });
+});
+
 
 
 app.listen(PORT, () => {
