@@ -125,6 +125,35 @@ exports.listEvents = async (req, res) => {
 // }
 
 
+// exports.registerEvent = async (req, res) => {
+//   try {
+//     const { eventId } = req.params;
+//     const { registered } = req.body; // Array of registrations
+
+//     // Find the event
+//     const event = await Event.findById(eventId);
+//     if (!event) {
+//       return res.status(404).json({ message: "Event not found" });
+//     }
+
+//     for (let reg of registered) {
+//       event.registered.push(reg);
+
+//       // Update the user's registered events
+//       await User.findByIdAndUpdate(reg.userId, {
+//         $push: { registeredEvents: eventId },
+//       });
+//     }
+
+//     await event.save();
+//     res.status(200).json({ message: "Users registered successfully", event });
+//   } catch (error) {
+//     res.status(500).json({ message: "Error registering users", error: error.message });
+//   }
+// };
+
+
+
 exports.registerEvent = async (req, res) => {
   try {
     const { eventId } = req.params;
@@ -137,6 +166,14 @@ exports.registerEvent = async (req, res) => {
     }
 
     for (let reg of registered) {
+      const isAlreadyRegistered = event.registered.some((r) => r.userId.equals(reg.userId));
+
+      if (isAlreadyRegistered) {
+        // return res.status(400).json({ message: `User ${reg.userId} is already registered for this event` });
+        return res.status(400).json({ message: `User  is already registered for this event!` });
+
+      }
+
       event.registered.push(reg);
 
       // Update the user's registered events
@@ -151,3 +188,4 @@ exports.registerEvent = async (req, res) => {
     res.status(500).json({ message: "Error registering users", error: error.message });
   }
 };
+

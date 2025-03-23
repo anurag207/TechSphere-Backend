@@ -14,7 +14,7 @@ const registeredDetailsSchema = new Schema(
 // Schema for user registration
 const registeredSchema = new Schema(
     {
-        userId: { type: Schema.Types.ObjectId, ref: "User", required: true }, // Reference to the registered user
+        userId: { type: Schema.Types.ObjectId, ref: "users", required: true }, // Reference to the registered user enforcing uniqueness
         registeredDetails: [registeredDetailsSchema], // Array of form fields as per the given format
     },
     { timestamps: true }
