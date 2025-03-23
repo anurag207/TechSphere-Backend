@@ -1,5 +1,5 @@
 const express=require('express');
-const {listEvents, createEvents, registerEvent,bookmarkEvent,getBookmarkedEvents,searchEvents,getUserDashboard} = require('../controllers/eventController.js');
+const {listEvents, createEvents, registerEvent,bookmarkEvent,getBookmarkedEvents,searchEvents} =require('../controllers/eventController.js');
 const {getEvents} =require('../controllers/eventfilterController.js');
 
 const eventRouter=express.Router();
@@ -10,5 +10,4 @@ eventRouter.get('/filter',getEvents);
 eventRouter.post("/bookmark/:userId/:eventId",bookmarkEvent);
 eventRouter.get("/bookmarks/:userId",getBookmarkedEvents);
 eventRouter.get("/search",searchEvents);
-eventRouter.get("/dashboard/:userId",getUserDashboard);
 module.exports={eventRouter};

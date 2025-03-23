@@ -125,6 +125,35 @@ exports.listEvents = async (req, res) => {
 // }
 
 
+// exports.registerEvent = async (req, res) => {
+//   try {
+//     const { eventId } = req.params;
+//     const { registered } = req.body; // Array of registrations
+
+//     // Find the event
+//     const event = await Event.findById(eventId);
+//     if (!event) {
+//       return res.status(404).json({ message: "Event not found" });
+//     }
+
+//     for (let reg of registered) {
+//       event.registered.push(reg);
+
+//       // Update the user's registered events
+//       await User.findByIdAndUpdate(reg.userId, {
+//         $push: { registeredEvents: eventId },
+//       });
+//     }
+
+//     await event.save();
+//     res.status(200).json({ message: "Users registered successfully", event });
+//   } catch (error) {
+//     res.status(500).json({ message: "Error registering users", error: error.message });
+//   }
+// };
+
+
+
 exports.registerEvent = async (req, res) => {
   try {
     const { eventId } = req.params;
@@ -137,6 +166,14 @@ exports.registerEvent = async (req, res) => {
     }
 
     for (let reg of registered) {
+      const isAlreadyRegistered = event.registered.some((r) => r.userId.equals(reg.userId));
+
+      if (isAlreadyRegistered) {
+        // return res.status(400).json({ message: `User ${reg.userId} is already registered for this event` });
+        return res.status(400).json({ message: `User  is already registered for this event!` });
+
+      }
+
       event.registered.push(reg);
 
       // Update the user's registered events
@@ -216,30 +253,4 @@ exports. bookmarkEvent = async (req, res) => {
     }
   };
 
-exports.getUserDashboard = async (req, res) => {
-  try {
-    let { userId } = req.params;
-    userId=userId.trim();
-    const currentDate = new Date();
 
-    const user = await User.findById(userId).populate("bookmarkEvents");
-    console.log("Fetching dashboard for User ID:", userId);
-    if (!user) {
-      return res.status(404).json({ message: "User not found" });
-      console.log("User not found");
-    }
-
-    // Convert stored string dates to Date while querying
-    const pastEvents = await Event.find({
-      $expr: { $lt: [{ $toDate: "$start" }, currentDate] },
-    });
-
-    res.json({
-      bookmarks: user.bookmarkEvents,
-      pastEvents: pastEvents,
-    });
-  } catch (err) {
-    console.error("Error fetching dashboard:", err);
-    res.status(500).json({ message: "Internal server error", error: err.message });
-  }
-};
