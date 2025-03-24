@@ -99,7 +99,7 @@ const loginUser= async(req,res)=>{
     // console.log(id);
 
 
-    const token= jwt.sign({ email,name,userId }, process.env.JWT_SECRET_KEY, { expiresIn: 10 * 60 }); //10 minutes token expiry
+    const token= jwt.sign({ email,name,userId }, process.env.JWT_SECRET_KEY, { expiresIn: 20 * 60 }); //10 minutes token expiry
     
     res.cookie("token",token,{
       maxAge: 900000, //cookie expires in 15 minutes

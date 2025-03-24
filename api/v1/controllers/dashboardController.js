@@ -1,8 +1,10 @@
 const { User } = require("../../../models/userModel");
+const {Event} = require("../../../models/eventModel");
 
 const getUserDashboard = async (req, res) => {
     try {
-        const { userId } = req.params;
+        let { userId } = req.params;
+        userId=userId.trim();
         const currentDate = new Date();
     
         // const user = await User.findById(userId).populate("bookmarkedEvents");
@@ -14,14 +16,14 @@ const getUserDashboard = async (req, res) => {
         }
     
         // Convert stored string dates to Date while querying
-        // const pastEvents = await EventCard.find({
-        //   $expr: { $lt: [{ $toDate: "$start" }, currentDate] },
-        // });
+        const pastEvents = await Event.find({
+          $expr: { $lt: [{ $toDate: "$start" }, currentDate] },
+        });
     
         res.json({
           bookmarks: user.bookmarkEvents,
           registeredEvents: user.registeredEvents,
-        //   pastEvents: pastEvents
+          pastEvents: pastEvents
         });
     } catch (err) {
         console.error("Error fetching dashboard:", err);

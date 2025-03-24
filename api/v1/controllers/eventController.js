@@ -189,3 +189,69 @@ exports.registerEvent = async (req, res) => {
   }
 };
 
+exports. bookmarkEvent = async (req, res) => {
+  try {
+    const { userId, eventId } = req.params; 
+    // console.log("User ID:", userId, "Event ID:", eventId);
+
+    const user = await User.findById(userId);
+    if (!user) return res.status(404).json({ message: "User not found" });
+
+    if (!user.bookmarkEvents.includes(eventId)) {
+      user.bookmarkEvents.push(eventId);
+      await user.save();
+      return res.json({ message: "Event bookmarked successfully", bookmarks: user.bookmarkEvents });
+    }
+
+    res.json({ message: "Event already bookmarked", bookmarks: user.bookmarkEvents });
+  } catch (err) {
+    console.error("Error in bookmarkEvent:", err);
+    res.status(500).json({ message: "Internal server error", error: err.message });
+  }
+};
+
+
+// Get all bookmarked events
+exports.getBookmarkedEvents = async (req, res) => {
+  try {
+    const { userId } = req.params;  
+    // console.log("Fetching bookmarks for User ID:", userId);  
+
+    const user = await User.findById(userId).populate("bookmarkEvents");
+
+    if (!user) {
+      return res.status(404).json({ message: "User not found" });
+    }
+
+    res.json({ bookmarks: user.bookmarkEvents });
+  } catch (err) {
+    console.error("Error fetching bookmarks:", err);  
+    res.status(500).json({ message: "Internal server error", error: err.message });
+  }
+};
+
+
+exports.searchEvents = async (req, res) => {
+  try {
+      const { search } = req.query; // Get only the search query
+      // console.log("Searching for:", search);
+
+      let query = {};
+
+      // 🔹 Filter events by search input (name field)
+      if (search && search.trim() !== "") {
+          query.name = { $regex: search, $options: "i" }; 
+      }
+
+      // console.log("Final MongoDB Query:", query);
+
+      // 🔹 Fetch filtered events
+      const events = await Event.find(query).limit(20);
+      // console.log("filtred Events",events);
+
+      res.json(events);
+  } catch (error) {
+      console.error("Error fetching events:", error);
+      res.status(500).json({ message: "Server error" });
+  }
+};
