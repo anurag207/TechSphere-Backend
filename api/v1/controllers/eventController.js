@@ -6,6 +6,7 @@ const { User } = require("../../../models/userModel.js");
 exports.createEvents=async (req, res) => {
   try{
       const {body}=req;
+      
       const newEvent = await Event.create(body);
       res.status(201);
       // console.log(body);

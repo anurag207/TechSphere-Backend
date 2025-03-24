@@ -17,7 +17,7 @@ const registrationSchema = new Schema(
 
 const eventSchema = new Schema(
   {
-    type: { type: String, required: true },
+    type: { type: String, required: true, enum: ["hackathon", "workshop", "seminar", "concert"] },
         location: { type: String, required: true },
         name: { type: String, required: true },
         description: { type: String },

@@ -32,7 +32,7 @@ app.use('/api/v1/auth',authRouter);
 
 app.use("/api/v1/events", eventRouter);
 
-app.use("/api/v1/dashboard", dashboardRouter);
+app.use("/api/v1/dashboard", verifyToken,dashboardRouter);
 
 app.use(verifyToken); // user authentication using jwt token
 
