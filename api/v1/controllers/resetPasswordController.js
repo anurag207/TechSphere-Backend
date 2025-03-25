@@ -49,8 +49,7 @@ exports.updatePassword = async (req, res) => {
     try {
         const { email } = req.userInfo; // Extracted from JWT
         const { password } = req.body;
-        console.log(password);
-
+       
         const user = await User.findOne({ email });
         if(!password)
         {
