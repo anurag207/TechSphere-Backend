@@ -22,8 +22,8 @@ const eventSchema = new Schema(
         name: { type: String, required: true },
         description: { type: String },
         start: { type: Date,  },
-        duration: { type: String, },
-        prize: { type: String },
+        duration: { type: Number},
+        prize: { type: mongoose.Schema.Types.Mixed, required: true },
         image_bg: { type: String },
         image_url: { type: String },
         eventMoreDetails: eventMoreDetailsSchema, // Embedded schema\
