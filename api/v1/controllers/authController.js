@@ -6,8 +6,8 @@ const jwt = require('jsonwebtoken');
 const registerUser = async (req, res) => {
   try {
     // console.log(req.body);
-    const { email, password, otp: userOtp } = req.body; //change name of otp while destructing, now use it as userOtp
-    if (!email || !password || !userOtp) {
+    const { email, password, otp: userOtp, name } = req.body; //change name of otp while destructing, now use it as userOtp
+    if (!email || !password || !userOtp|| !name) {
       res.status(400).json({
         status: "fail",
         message: "Either name,email,password or OTP is missing!",
@@ -41,6 +41,7 @@ const registerUser = async (req, res) => {
     const hashedPassword=await bcrypt.hash(password,salt);
 
     await User.create({
+      name,
       email,
       password : hashedPassword,
     });
@@ -110,7 +111,7 @@ const loginUser= async(req,res)=>{
     res.status(200).json({
         status: "login success",
         message: "done",
-        userData: {email,userId
+        userData: {email,userId,name
         },
     }); 
 }

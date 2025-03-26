@@ -42,8 +42,8 @@ app.get("/api/v1/isAuthenticated", (req,res)=>{
       isAuthenticated :true,
       user: {
           email: req.userInfo.email,
-          userId:req.userInfo.userId
-          // name: req.userInfo.name
+          userId:req.userInfo.userId,
+          name: req.userInfo.name
       }
   })
 })
