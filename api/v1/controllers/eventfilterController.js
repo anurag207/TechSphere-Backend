@@ -9,12 +9,12 @@ exports.getEvents = async (req, res) => {
       isFree,
       duration,
       page = 1,
-      size = 20,
+      size = 10,
     } = req.query;
 
     const filter = {};
     const today = Date.now();
-    // today.setUTCHours(0, 0, 0, 0);
+    //  today.setUTCHours(0, 0, 0, 0);
 
     if (view === "upcoming") {
       filter.start = { $gte: today };
@@ -23,14 +23,16 @@ exports.getEvents = async (req, res) => {
     }
 
     if (isFree === "true") {
-      filter.prize = "Free";
-    } else if (price) {
-      filter.prize = price;
+      filter.prize = { $in: ["Free", 0] }; // Match both "Free" and 0
+    }
+     else if (price) {
+      filter.prize = Number(price);
     }
 
     if (duration) {
-      filter.duration = duration;
+      filter.duration = Number(duration); // Convert string to number
     }
+    
 
     const totalEventsInDatabase = await Event.countDocuments({});
     const totalFilteredEvents = await Event.countDocuments(filter);
