@@ -13,7 +13,7 @@ const { dashboardRouter } = require("../api/v1/router/dashboardRouter.js");
 require("../config/db.js");
 require('../config/nodemailer.js');
 
-const PORT = process.env.port || 1900;
+const PORT = process.env.port || 1901;
 
 app.get("/", (req, res) => {
   res.send("<h1>Server is running🎉</h1>");
