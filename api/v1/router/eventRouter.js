@@ -10,7 +10,8 @@ const {
 const { getEvents } = require("../controllers/eventfilterController.js");
 const { verifyToken } = require("../middleware/jwtVerification.js");
 const eventRouter = express.Router();
-eventRouter.post("/", verifyToken, createEvents);
+// eventRouter.post("/", verifyToken, createEvents);
+eventRouter.post("/", createEvents);
 eventRouter.get("/", listEvents);
 eventRouter.post("/:eventId/register", verifyToken, registerEvent);
 eventRouter.get("/filter", getEvents);
