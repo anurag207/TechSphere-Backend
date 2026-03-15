@@ -211,24 +211,24 @@ exports. bookmarkEvent = async (req, res) => {
 };
 
 
-// Get all bookmarked events
-exports.getBookmarkedEvents = async (req, res) => {
-  try {
-    const { userId } = req.params;  
-    // console.log("Fetching bookmarks for User ID:", userId);  
+ // Get all bookmarked events
+// exports.getBookmarkedEvents = async (req, res) => {
+//   try {
+//     const { userId } = req.params;  
+//     // console.log("Fetching bookmarks for User ID:", userId);  
 
-    const user = await User.findById(userId).populate("bookmarkEvents");
+//     const user = await User.findById(userId).populate("bookmarkEvents");
 
-    if (!user) {
-      return res.status(404).json({ message: "User not found" });
-    }
+//     if (!user) {
+//       return res.status(404).json({ message: "User not found" });
+//     }
 
-    res.json({ bookmarks: user.bookmarkEvents });
-  } catch (err) {
-    console.error("Error fetching bookmarks:", err);  
-    res.status(500).json({ message: "Internal server error", error: err.message });
-  }
-};
+//     res.json({ bookmarks: user.bookmarkEvents });
+//   } catch (err) {
+//     console.error("Error fetching bookmarks:", err);  
+//     res.status(500).json({ message: "Internal server error", error: err.message });
+//   }
+// };
 
 
 exports.searchEvents = async (req, res) => {

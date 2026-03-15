@@ -16,12 +16,11 @@ exports.getEvents = async (req, res) => {
     const today = Date.now();
     //  today.setUTCHours(0, 0, 0, 0);
 
-    if (view === "upcoming") {
-      filter.start = { $gte: today };
-    } else if (view === "past") {
-      filter.start = { $lt: today };
-    }
-
+    // Filter by event type (webinar, conference, etc.)
+    // if (eventType && eventType !== "all") {
+    //   filter.type = eventType; // Only include the selected event type
+    // }
+  
     if (isFree === "true") {
       filter.prize = { $in: ["Free", 0] }; // Match both "Free" and 0
     }
